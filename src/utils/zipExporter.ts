@@ -54,13 +54,13 @@ Created with Bristol Café Code Lab.
   if (imgFolder) {
     for (const imgName of imageNames) {
       try {
-        const response = await fetch(`/images/${imgName}`);
+        const response = await fetch(`images/${imgName}`);
         if (response.ok) {
           const blob = await response.blob();
           imgFolder.file(imgName, blob);
         }
       } catch (err) {
-        console.warn(`Could not bundle image /images/${imgName}:`, err);
+        console.warn(`Could not bundle image images/${imgName}:`, err);
       }
     }
   }
