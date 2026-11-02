@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bristol Café Code Lab – Repair & Build a Website | BTEC Unit 15</title>
+    <meta name="description" content="Interactive browser-based educational coding game for Level 3 BTEC Computing students. Learn HTML & CSS by repairing Bristol Brew Café's website." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Fallback if opened directly as file:/// without a dev server
+      if (window.location.protocol === 'file:') {
+        setTimeout(function() {
+          var root = document.getElementById('root');
+          if (root && root.children.length === 0) {
+            root.innerHTML = `
+              <div style="font-family: 'Segoe UI', system-ui, sans-serif; max-width: 750px; margin: 40px auto; padding: 35px; background: #ffffff; border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border-left: 6px solid #c97a3e;">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 15px;">
+                  <span style="font-size: 2rem;">☕</span>
+                  <h1 style="color: #3d2314; margin: 0; font-size: 1.6rem;">Bristol Café Code Lab</h1>
+                </div>
+                <div style="background: #fff3e0; border: 1px solid #ffe0b2; color: #b45309; padding: 14px 18px; border-radius: 8px; margin: 20px 0; font-size: 0.95rem; line-height: 1.5;">
+                  <strong>⚠️ Has abierto el archivo index.html directamente desde el explorador (file://):</strong><br>
+                  Los navegadores bloquean la ejecución directa de módulos TypeScript/React por seguridad en <code>file://</code>, por eso se veía blanco.
+                </div>
+                <h3 style="color: #3d2314; margin-bottom: 10px;">Cómo ver la aplicación funcionando:</h3>
+                <p style="color: #475569; font-size: 1rem; line-height: 1.6;">
+                  El servidor de desarrollo ya está listo. Haz clic aquí para abrir la aplicación:
+                </p>
+                <div style="margin: 15px 0;">
+                  <a href="http://localhost:5173/" target="_blank" style="display: inline-block; background: #c97a3e; color: #ffffff; padding: 12px 24px; border-radius: 8px; font-weight: bold; text-decoration: none; font-size: 1rem; box-shadow: 0 2px 8px rgba(201,122,62,0.3);">
+                    👉 Abrir Bristol Café Code Lab en http://localhost:5173
+                  </a>
+                </div>
+                <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 25px 0;">
+                <p style="color: #94a3b8; font-size: 0.85rem; margin: 0;">
+                  Nivel 3 BTEC Computing — Unit 15: Website Development
+                </p>
+              </div>
+            `;
+          }
+        }, 500);
+      }
+    </script>
+  </body>
+</html>
