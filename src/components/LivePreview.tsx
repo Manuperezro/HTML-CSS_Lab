@@ -7,13 +7,15 @@ interface LivePreviewProps {
   cssContent: string;
   currentChallengeId: ChallengeId;
   isCompleted?: boolean;
+  widthPercent?: number;
 }
 
 export const LivePreview: React.FC<LivePreviewProps> = ({
   htmlContent,
   cssContent,
   currentChallengeId,
-  isCompleted = false
+  isCompleted = false,
+  widthPercent = 45
 }) => {
   const [deviceMode, setDeviceMode] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
   const [reloadKey, setReloadKey] = useState(0);
@@ -51,8 +53,9 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
 
   return (
     <section style={{
-      width: '45%',
-      minWidth: '380px',
+      width: `${widthPercent}%`,
+      minWidth: '220px',
+      flexShrink: 0,
       backgroundColor: 'var(--bg-surface)',
       display: 'flex',
       flexDirection: 'column',

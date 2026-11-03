@@ -8,6 +8,7 @@ interface FileExplorerProps {
   onSelectTab: (tab: 'index.html' | 'style.css' | 'files') => void;
   challenge1Blocks: CodeBlock[];
   onMoveChallenge1File?: (fileId: string, targetCategory: 'root' | 'images') => void;
+  width?: number;
 }
 
 export const FileExplorer: React.FC<FileExplorerProps> = ({
@@ -15,7 +16,8 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
   activeTab,
   onSelectTab,
   challenge1Blocks,
-  onMoveChallenge1File
+  onMoveChallenge1File,
+  width = 260
 }) => {
   const [isImagesOpen, setIsImagesOpen] = React.useState(true);
   const isChallenge1 = currentChallengeId === 1;
@@ -26,9 +28,11 @@ export const FileExplorer: React.FC<FileExplorerProps> = ({
 
   return (
     <aside style={{
-      width: '280px',
+      width: `${width}px`,
+      minWidth: '150px',
+      maxWidth: '420px',
+      flexShrink: 0,
       backgroundColor: 'var(--bg-surface)',
-      borderRight: '1px solid var(--border-light)',
       display: 'flex',
       flexDirection: 'column',
       height: '100%',

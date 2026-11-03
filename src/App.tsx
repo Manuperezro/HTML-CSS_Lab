@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import type { ChallengeId, CodeBlock, ValidationFeedback } from './types/challenge';
 import { CHALLENGES } from './data/challenges';
 import { TopNavigation } from './components/TopNavigation';
@@ -20,8 +20,96 @@ const STORAGE_KEY_PROGRESS = 'bristol_cafe_completed_v1';
 const STORAGE_KEY_CURRENT = 'bristol_cafe_current_v1';
 const STORAGE_KEY_BUGS = 'bristol_cafe_bugs_v1';
 const STORAGE_KEY_THEME = 'bristol_cafe_theme_v1';
+const STORAGE_KEY_PREVIEW_WIDTH = 'bristol_cafe_preview_width_v1';
+const STORAGE_KEY_EXPLORER_WIDTH = 'bristol_cafe_explorer_width_v1';
 
 export const App: React.FC = () => {
+  const workspaceRef = useRef<HTMLElement>(null);
+  const [activeResizer, setActiveResizer] = useState<'explorer' | 'preview' | null>(null);
+
+  // Resizable panel widths
+  const [explorerWidth, setExplorerWidth] = useState<number>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY_EXPLORER_WIDTH);
+      if (saved) {
+        const parsed = parseFloat(saved);
+        if (parsed >= 150 && parsed <= 420) return parsed;
+      }
+    } catch {}
+    return 260;
+  });
+
+  const [previewWidthPercent, setPreviewWidthPercent] = useState<number>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY_PREVIEW_WIDTH);
+      if (saved) {
+        const parsed = parseFloat(saved);
+        if (parsed >= 18 && parsed <= 72) return parsed;
+      }
+    } catch {}
+    return 45;
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY_EXPLORER_WIDTH, explorerWidth.toString());
+      localStorage.setItem(STORAGE_KEY_PREVIEW_WIDTH, previewWidthPercent.toString());
+    } catch {}
+  }, [explorerWidth, previewWidthPercent]);
+
+  useEffect(() => {
+    if (!activeResizer) {
+      document.body.classList.remove('is-resizing-panes');
+      return;
+    }
+
+    document.body.classList.add('is-resizing-panes');
+
+    const updateSize = (clientX: number) => {
+      if (!workspaceRef.current) return;
+      const rect = workspaceRef.current.getBoundingClientRect();
+      if (rect.width <= 0) return;
+
+      if (activeResizer === 'explorer') {
+        const nextWidth = Math.max(150, Math.min(420, clientX - rect.left));
+        setExplorerWidth(nextWidth);
+      } else if (activeResizer === 'preview') {
+        const rightPx = rect.right - clientX;
+        const minEditorPx = 240;
+        const maxRightPx = Math.max(220, rect.width - explorerWidth - minEditorPx - 16);
+        const clampedRightPx = Math.max(220, Math.min(maxRightPx, rightPx));
+        const nextPercent = (clampedRightPx / rect.width) * 100;
+        setPreviewWidthPercent(Math.max(18, Math.min(72, nextPercent)));
+      }
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      updateSize(e.clientX);
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        updateSize(e.touches[0].clientX);
+      }
+    };
+
+    const handleStopResize = () => {
+      setActiveResizer(null);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleStopResize);
+    window.addEventListener('touchmove', handleTouchMove);
+    window.addEventListener('touchend', handleStopResize);
+
+    return () => {
+      document.body.classList.remove('is-resizing-panes');
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleStopResize);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleStopResize);
+    };
+  }, [activeResizer, explorerWidth]);
   // Theme state (light / dark)
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     try {
@@ -455,7 +543,7 @@ export const App: React.FC = () => {
       />
 
       {/* 2. Main 3-Column Studio Workspace */}
-      <main style={{ flex: 1, display: 'flex', overflow: 'hidden', position: 'relative' }}>
+      <main ref={workspaceRef} style={{ flex: 1, display: 'flex', overflow: 'hidden', position: 'relative' }}>
         {/* Left: VS Code File Explorer */}
         <FileExplorer
           currentChallengeId={currentChallengeId}
@@ -463,7 +551,21 @@ export const App: React.FC = () => {
           onSelectTab={setActiveTab}
           challenge1Blocks={blocksMap[1] || []}
           onMoveChallenge1File={handleMoveChallenge1File}
+          width={explorerWidth}
         />
+
+        {/* Resizer between Explorer & Code Editor */}
+        <div
+          className={`pane-resizer ${activeResizer === 'explorer' ? 'active' : ''}`}
+          onMouseDown={() => setActiveResizer('explorer')}
+          onTouchStart={() => setActiveResizer('explorer')}
+          onDoubleClick={() => setExplorerWidth(260)}
+          title="Drag to resize File Explorer (double-click to reset)"
+          role="separator"
+          aria-orientation="vertical"
+        >
+          <div className="pane-resizer-grip" />
+        </div>
 
         {/* Center: Interactive Code Editor */}
         <CodeEditor
@@ -481,12 +583,26 @@ export const App: React.FC = () => {
           onMoveChallenge9Block={handleMoveChallenge9Block}
         />
 
+        {/* Resizer between Code Editor & Live Website Preview */}
+        <div
+          className={`pane-resizer ${activeResizer === 'preview' ? 'active' : ''}`}
+          onMouseDown={() => setActiveResizer('preview')}
+          onTouchStart={() => setActiveResizer('preview')}
+          onDoubleClick={() => setPreviewWidthPercent(45)}
+          title="Drag left or right to resize Code Editor & Live Preview (double-click to reset)"
+          role="separator"
+          aria-orientation="vertical"
+        >
+          <div className="pane-resizer-grip" />
+        </div>
+
         {/* Right: Live Sandboxed Website Preview */}
         <LivePreview
           htmlContent={preview.html}
           cssContent={preview.css}
           currentChallengeId={currentChallengeId}
           isCompleted={isCurrentCompleted}
+          widthPercent={previewWidthPercent}
         />
       </main>
 

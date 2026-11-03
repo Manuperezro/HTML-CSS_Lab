@@ -198,9 +198,8 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
       backgroundColor: 'var(--bg-surface-subtle)',
       display: 'flex',
       flexDirection: 'column',
-      borderRight: '1px solid var(--border-light)',
       height: '100%',
-      minWidth: '400px',
+      minWidth: '240px',
       overflow: 'hidden'
     }}>
       {/* VS Code Editor Tabs */}

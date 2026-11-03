@@ -315,3 +315,50 @@ button:focus-visible {
   background-color: #256629;
   transform: translateY(-1px);
 }
+
+/* Resizable Workspace Splitters */
+.pane-resizer {
+  width: 8px;
+  flex-shrink: 0;
+  background-color: var(--bg-panel-header);
+  border-left: 1px solid var(--border-light);
+  border-right: 1px solid var(--border-light);
+  cursor: col-resize;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 20;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+  user-select: none;
+}
+
+.pane-resizer:hover,
+.pane-resizer.active {
+  background-color: rgba(201, 122, 62, 0.18);
+  border-color: var(--cafe-accent);
+}
+
+.pane-resizer-grip {
+  width: 2px;
+  height: 36px;
+  border-radius: 2px;
+  background-color: var(--border-active);
+  transition: background-color 0.15s ease, height 0.15s ease;
+}
+
+.pane-resizer:hover .pane-resizer-grip,
+.pane-resizer.active .pane-resizer-grip {
+  background-color: var(--cafe-accent);
+  height: 52px;
+}
+
+body.is-resizing-panes,
+body.is-resizing-panes * {
+  cursor: col-resize !important;
+  user-select: none !important;
+}
+
+body.is-resizing-panes iframe {
+  pointer-events: none !important;
+}
