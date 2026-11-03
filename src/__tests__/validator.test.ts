@@ -122,20 +122,18 @@ describe('Bristol Café Code Lab - Validation Engine Tests', () => {
     expect(result.isValid).toBe(true);
   });
 
-  // Test Challenge 9: CSS Box Model (Margin, Padding & Borders)
-  it('Challenge 9: validates Margin, Padding, and Border declarations on .about-box, .menu-card, and .contact-box', () => {
-    const validBoxModelBlocks: CodeBlock[] = [
+  // Test Challenge 9: Padding & Margin
+  it('Challenge 9: validates Padding and Margin declarations on .about-box, .menu-card, and .contact-box', () => {
+    const validSpacingBlocks: CodeBlock[] = [
       { id: 'b9-about-pad', content: 'padding: 30px;', category: '.about-box', type: 'declaration' },
       { id: 'b9-about-mar', content: 'margin-bottom: 25px;', category: '.about-box', type: 'declaration' },
       { id: 'b9-card-pad', content: 'padding: 20px;', category: '.menu-card', type: 'declaration' },
       { id: 'b9-card-mar', content: 'margin-bottom: 16px;', category: '.menu-card', type: 'declaration' },
-      { id: 'b9-card-bor', content: 'border-left: 4px solid #c97a3e;', category: '.menu-card', type: 'declaration' },
       { id: 'b9-contact-pad', content: 'padding: 24px;', category: '.contact-box', type: 'declaration' },
-      { id: 'b9-contact-mar', content: 'margin-top: 20px;', category: '.contact-box', type: 'declaration' },
-      { id: 'b9-contact-bor', content: 'border: 2px dashed #c97a3e;', category: '.contact-box', type: 'declaration' }
+      { id: 'b9-contact-mar', content: 'margin-top: 20px;', category: '.contact-box', type: 'declaration' }
     ];
 
-    const result = validateChallenge(9, validBoxModelBlocks, 1);
+    const result = validateChallenge(9, validSpacingBlocks, 1);
     expect(result.isValid).toBe(true);
 
     // Also verify initial unassigned state fails validation

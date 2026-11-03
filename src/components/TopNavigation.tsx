@@ -1,5 +1,5 @@
 import React from 'react';
-import { Coffee, BookOpen, GraduationCap, Maximize, RotateCcw, Volume2, VolumeX, CheckCircle } from 'lucide-react';
+import { Coffee, BookOpen, GraduationCap, Maximize, RotateCcw, Volume2, VolumeX, CheckCircle, Sun, Moon } from 'lucide-react';
 import type { ChallengeId } from '../types/challenge';
 import { CHALLENGES } from '../data/challenges';
 
@@ -12,6 +12,8 @@ interface TopNavigationProps {
   onStartAgain: () => void;
   isMuted: boolean;
   onToggleMute: () => void;
+  theme?: 'light' | 'dark';
+  onToggleTheme?: () => void;
 }
 
 export const TopNavigation: React.FC<TopNavigationProps> = ({
@@ -22,7 +24,9 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
   onOpenGlossary,
   onStartAgain,
   isMuted,
-  onToggleMute
+  onToggleMute,
+  theme = 'light',
+  onToggleTheme
 }) => {
   const progressPercent = Math.round((completedChallenges.length / CHALLENGES.length) * 100);
 
@@ -152,6 +156,24 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
           <BookOpen size={16} color="var(--color-css)" />
           <span>Glossary</span>
         </button>
+
+        {onToggleTheme && (
+          <button
+            onClick={onToggleTheme}
+            className="btn-secondary"
+            style={{
+              padding: '6px 10px',
+              fontSize: '0.8rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '5px'
+            }}
+            title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+          >
+            {theme === 'dark' ? <Sun size={15} color="#fbbf24" /> : <Moon size={15} color="var(--text-muted)" />}
+            <span>{theme === 'dark' ? 'Light' : 'Dark'}</span>
+          </button>
+        )}
 
         <button
           onClick={onToggleMute}

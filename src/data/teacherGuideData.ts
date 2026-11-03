@@ -294,14 +294,14 @@ nav a {
   },
   {
     challengeId: 9,
-    title: 'Challenge 9: Everything Is Squashed Together! (CSS Box Model: Margin & Padding)',
+    title: 'Challenge 9: Fix the Spacing: Padding & Margin!',
     learningObjectives: [
-      'Master the four layers of the CSS Box Model: Content, Padding, Border, and Margin',
-      'Use padding to create internal cushion inside containers and cards',
-      'Use margin-bottom and margin-top to create external separation between adjacent elements'
+      'Understand the difference between padding (inside space) and margin (outside space)',
+      'Use padding to create breathing room inside containers and cards',
+      'Use margin-bottom and margin-top to separate boxes on the page'
     ],
-    newConcepts: ['CSS Box Model', 'padding (inner spacing)', 'margin-bottom & margin-top (outer spacing)', 'border & border-left'],
-    expectedSolutionSummary: 'Assign padding: 30px; and margin-bottom: 25px; to .about-box; assign padding: 20px;, margin-bottom: 16px;, and border-left: 4px solid #c97a3e; to .menu-card; assign padding: 24px;, margin-top: 20px;, and border: 2px dashed #c97a3e; to .contact-box.',
+    newConcepts: ['padding (inner spacing)', 'margin-bottom & margin-top (outer spacing)'],
+    expectedSolutionSummary: 'Assign padding: 30px; and margin-bottom: 25px; to .about-box; assign padding: 20px; and margin-bottom: 16px; to .menu-card; assign padding: 24px; and margin-top: 20px; to .contact-box.',
     expectedCode: {
       css: `.about-box {
   padding: 30px;
@@ -311,37 +311,35 @@ nav a {
 .menu-card {
   padding: 20px;
   margin-bottom: 16px;
-  border-left: 4px solid #c97a3e;
 }
 
 .contact-box {
   padding: 24px;
   margin-top: 20px;
-  border: 2px dashed #c97a3e;
 }`
     },
     commonMisconceptions: [
-      'Confusing padding (space inside the border that shows the element\'s background colour) with margin (transparent space outside the border).',
+      'Confusing padding (space inside the box that shows the element\'s background colour) with margin (transparent space outside the box).',
       'Using padding when trying to push two separate cards away from each other.'
     ],
     suggestedQuestions: [
-      'If an element has a white background and a brown border, does increasing padding or margin add more white space inside the border?',
-      'Why do we use border-left on .menu-card instead of a full 4-sided border?'
+      'If an element has a white background, does increasing padding or margin add more white space inside the card?',
+      'What happens when two stacked cards have 0px margin between them?'
     ],
     extensionTasks: [
-      'Open Chrome DevTools (F12) and inspect the visual Box Model diagram in the Computed styles panel.'
+      'Experiment with two-value padding shorthand such as padding: 12px 24px; (top/bottom, left/right).'
     ]
   },
   {
     challengeId: 10,
     title: 'Challenge 10: SAVE BRISTOL BREW CAFÉ! (Final 10-Bug Mission)',
     learningObjectives: [
-      'Synthesise all HTML and CSS skills in a comprehensive source-code repair scenario',
-      'Read HTML and CSS source code to spot syntax errors, path errors, and box-model bugs',
+      'Synthesise all HTML and CSS skills in a live keyboard code repair scenario',
+      'Type directly into broken HTML and CSS lines to fix syntax, path, and spacing bugs',
       'Observe live visual changes in the webpage preview as each line of code is fixed'
     ],
-    newConcepts: ['Source code debugging', 'Before & after code inspection', 'Error triage', 'Cross-file coordination between index.html and style.css'],
-    expectedSolutionSummary: 'Diagnose and fix all 10 bugs across index.html and style.css: 1. Add missing </main>, 2. Correct href to style.css, 3. Place <header> inside <body>, 4. Nest <nav> inside <header>, 5. Fix coffee image path to images/coffee.jpg, 6. Add alt="Homemade artisan cake", 7. Fix class selector to .hero, 8. Add missing semicolon after header padding, 9. Fix 0px padding and margin on .menu-card to 24px padding & 16px margin-bottom, 10. Correct link href to #contact.',
+    newConcepts: ['Live code debugging', 'Keyboard syntax repair', 'Error triage', 'Cross-file coordination between index.html and style.css'],
+    expectedSolutionSummary: 'Type the fixes for all 10 bugs across index.html and style.css: 1. Fix closing </main>, 2. Fix href="style.css", 3. Fix <header> tag typo, 4. Fix <nav> tag typo, 5. Fix coffee image path to images/coffee.jpg, 6. Add alt="Homemade cake", 7. Fix class selector to .hero {, 8. Add missing semicolon after header padding, 9. Change 0px padding and margin-bottom on .menu-card to 24px padding & 16px margin-bottom, 10. Fix link href to #contact.',
     expectedCode: {
       html: `<!DOCTYPE html>
 <html lang="en">

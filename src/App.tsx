@@ -19,8 +19,24 @@ import { soundManager } from './utils/soundEffects';
 const STORAGE_KEY_PROGRESS = 'bristol_cafe_completed_v1';
 const STORAGE_KEY_CURRENT = 'bristol_cafe_current_v1';
 const STORAGE_KEY_BUGS = 'bristol_cafe_bugs_v1';
+const STORAGE_KEY_THEME = 'bristol_cafe_theme_v1';
 
 export const App: React.FC = () => {
+  // Theme state (light / dark)
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY_THEME);
+      if (saved === 'dark' || saved === 'light') return saved;
+    } catch {}
+    return 'light';
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    try {
+      localStorage.setItem(STORAGE_KEY_THEME, theme);
+    } catch {}
+  }, [theme]);
   // Current challenge selection
   const [currentChallengeId, setCurrentChallengeId] = useState<ChallengeId>(() => {
     try {
@@ -137,6 +153,18 @@ export const App: React.FC = () => {
     });
   };
 
+  // Select option for Challenge 6
+  const handleSelectChallenge6Option = (blockId: string) => {
+    soundManager.playMove();
+    setBlocksMap(prev => {
+      const updated = (prev[6] || []).map(b => ({
+        ...b,
+        category: b.id === blockId ? 'selected' : 'unselected'
+      }));
+      return { ...prev, 6: updated };
+    });
+  };
+
   // Move declarations for Challenge 8
   const handleMoveChallenge8Block = (blockId: string, targetCategory: string) => {
     soundManager.playMove();
@@ -149,7 +177,7 @@ export const App: React.FC = () => {
     });
   };
 
-  // Move declarations for Challenge 9 (Box Model: Margin, Padding & Border)
+  // Move declarations for Challenge 9 (Padding & Margin)
   const handleMoveChallenge9Block = (blockId: string, targetCategory: string) => {
     soundManager.playMove();
     setBlocksMap(prev => {
@@ -158,6 +186,23 @@ export const App: React.FC = () => {
         return b;
       });
       return { ...prev, 9: updated };
+    });
+  };
+
+  // Set bug fixed state directly when student types valid code in Challenge 10
+  const handleSetBugFixed = (bugKey: keyof BugFixState, isFixed: boolean) => {
+    soundManager.playMove();
+    setBugState(prev => {
+      const next = { ...prev, [bugKey]: isFixed };
+      const fixedCount = Object.values(next).filter(Boolean).length;
+      if (fixedCount === 10) {
+        soundManager.playSuccess();
+        if (!completedChallenges.includes(10)) {
+          setCompletedChallenges(c => [...c, 10]);
+        }
+        setIsCompletionModalOpen(true);
+      }
+      return next;
     });
   };
 
@@ -213,10 +258,19 @@ export const App: React.FC = () => {
       return;
     }
 
-    if (currentChallengeId === 9) {
+    if (currentChallengeId === 6) {
       setBlocksMap(prev => ({
         ...prev,
-        9: ch.initialBlocks.map(b => ({ ...b, category: 'tray' }))
+        6: ch.initialBlocks.map(b => ({ ...b, category: 'unselected' }))
+      }));
+      setFeedback(null);
+      return;
+    }
+
+    if (currentChallengeId === 8 || currentChallengeId === 9) {
+      setBlocksMap(prev => ({
+        ...prev,
+        [currentChallengeId]: ch.initialBlocks.map(b => ({ ...b, category: 'tray' }))
       }));
       setFeedback(null);
       return;
@@ -314,11 +368,13 @@ export const App: React.FC = () => {
           current.sort((a, b) => solutionIds.indexOf(a.id) - solutionIds.indexOf(b.id));
           setBlocksMap(prev => ({ ...prev, 5: current }));
         } else if (id === 6) {
-          const correct = (blocksMap[6] || []).find(b => b.id === 'b6-correct');
-          const others = (blocksMap[6] || []).filter(b => b.id !== 'b6-correct');
-          if (correct) {
-            setBlocksMap(prev => ({ ...prev, 6: [correct, ...others] }));
-          }
+          setBlocksMap(prev => ({
+            ...prev,
+            6: (prev[6] || []).map(b => ({
+              ...b,
+              category: b.id === 'b6-correct' ? 'selected' : 'unselected'
+            }))
+          }));
         } else if (id === 7) {
           const solutionIds = ['b7-body-sel', 'b7-open1', 'b7-prop-bg', 'b7-semi1', 'b7-prop-font', 'b7-close1', 'b7-h1-sel', 'b7-open2', 'b7-h1-color', 'b7-h1-align', 'b7-close2'];
           const current = [...(blocksMap[7] || [])];
@@ -341,10 +397,8 @@ export const App: React.FC = () => {
             'b9-about-mar': '.about-box',
             'b9-card-pad': '.menu-card',
             'b9-card-mar': '.menu-card',
-            'b9-card-bor': '.menu-card',
             'b9-contact-pad': '.contact-box',
-            'b9-contact-mar': '.contact-box',
-            'b9-contact-bor': '.contact-box'
+            'b9-contact-mar': '.contact-box'
           };
           setBlocksMap(prev => ({
             ...prev,
@@ -396,6 +450,8 @@ export const App: React.FC = () => {
           const muted = soundManager.toggleMute();
           setIsMuted(muted);
         }}
+        theme={theme}
+        onToggleTheme={() => setTheme(prev => (prev === 'dark' ? 'light' : 'dark'))}
       />
 
       {/* 2. Main 3-Column Studio Workspace */}
@@ -419,6 +475,8 @@ export const App: React.FC = () => {
           onExplainBlock={handleExplainBlock}
           bugState={bugState}
           onToggleBug={handleToggleBug}
+          onSetBugFixed={handleSetBugFixed}
+          onSelectChallenge6Option={handleSelectChallenge6Option}
           onMoveChallenge8Block={handleMoveChallenge8Block}
           onMoveChallenge9Block={handleMoveChallenge9Block}
         />

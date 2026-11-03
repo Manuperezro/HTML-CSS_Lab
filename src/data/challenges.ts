@@ -223,42 +223,40 @@ export const CHALLENGES: Challenge[] = [
   },
   {
     id: 6,
-    title: 'Why Does the Website Look So Plain?',
-    subtitle: 'Connect the external CSS stylesheet inside the <head> element',
-    difficulty: 'Medium',
+    title: 'Connect the CSS Stylesheet!',
+    subtitle: 'Place the correct <link> tag inside <head> to style the webpage',
+    difficulty: 'Easy',
     category: 'css-connect',
     activeTab: 'index.html',
     learningObjectives: [
-      'Connect an external stylesheet using the <link> tag',
-      'Understand the rel="stylesheet" and href attributes',
-      'Learn the critical importance of exact filename matching'
+      'Connect an external CSS file to index.html using <link>',
+      'Understand rel="stylesheet" and href="style.css"',
+      'Spot common mistakes like <script> tags or filename typos'
     ],
     conceptsIntroduced: [
-      '<link> element',
-      'rel="stylesheet" relationship',
-      'href="style.css" external file path',
-      'CSS linking inside <head>'
+      '<link rel="stylesheet" href="style.css">',
+      'Connecting HTML and CSS inside <head>',
+      'Exact filename matching (style.css vs styles.css)'
     ],
     instructions: [
-      'Look at the live preview: the HTML structure is there, but everything looks completely plain, black, and unstyled!',
-      'The café has a style.css file ready in the project, but index.html has a broken link.',
-      'From the three candidate code blocks in the tray, pick the ONLY correct tag to link style.css and place it inside <head>:',
+      'Look at the live preview on the right: the HTML text is there, but the page has no colours or styling because style.css is not connected!',
+      'Look at line 6 inside <head> in the code editor and click the ONLY correct line to connect style.css:',
       '• Option A: <link rel="stylesheet" href="style.css">',
       '• Option B: <script src="style.css"></script>',
       '• Option C: <link rel="stylesheet" href="styles.css">',
-      'Watch what happens to the preview the moment the correct link is in place!'
+      'As soon as you pick the right line, the whole café website will light up with colours and fonts!'
     ],
     funFact: 'CSS stands for Cascading Style Sheets. By keeping styling in a separate style.css file, you can style hundreds of pages on a website from a single file!',
     hints: [
-      'Check the File Explorer on the left: what is the EXACT name of the CSS file? (Is it style.css or styles.css?)',
-      '<script> is used for JavaScript programs, while <link rel="stylesheet"> is used for CSS stylesheets.',
-      'The correct tag is <link rel="stylesheet" href="style.css">, placed directly inside <head>.'
+      'Check the File Explorer on the left: the CSS file is named style.css (without an extra "s").',
+      '<script> is only for JavaScript, not for CSS stylesheets.',
+      'Click Option A: <link rel="stylesheet" href="style.css">, then click Check Answer!'
     ],
     previewMode: 'styled',
     initialBlocks: [
-      { id: 'b6-script-wrong', content: '<script src="style.css"></script>', type: 'tag-self', tagType: 'html', label: 'Option B (<script>)', explanationKey: 'linkCss' },
-      { id: 'b6-correct', content: '<link rel="stylesheet" href="style.css">', type: 'tag-self', tagType: 'html', label: 'Option A (rel="stylesheet" href="style.css")', explanationKey: 'linkCss' },
-      { id: 'b6-typo-wrong', content: '<link rel="stylesheet" href="styles.css">', type: 'tag-self', tagType: 'html', label: 'Option C (styles.css typo)', explanationKey: 'linkCss' }
+      { id: 'b6-correct', content: '<link rel="stylesheet" href="style.css">', category: 'unselected', type: 'tag-self', tagType: 'html', label: 'Option A: Connect style.css as a stylesheet', explanationKey: 'linkCss' },
+      { id: 'b6-script-wrong', content: '<script src="style.css"></script>', category: 'unselected', type: 'tag-self', tagType: 'html', label: 'Option B: Load using a <script> tag', explanationKey: 'linkCss' },
+      { id: 'b6-typo-wrong', content: '<link rel="stylesheet" href="styles.css">', category: 'unselected', type: 'tag-self', tagType: 'html', label: 'Option C: Connect styles.css (with an "s")', explanationKey: 'linkCss' }
     ]
   },
   {
@@ -344,104 +342,101 @@ export const CHALLENGES: Challenge[] = [
     ],
     previewMode: 'styled',
     initialBlocks: [
-      { id: 'b8-1', content: 'background-color: #3d2314;', category: 'header', type: 'declaration', tagType: 'css' },
-      { id: 'b8-2', content: 'color: #ffffff;', category: 'header', type: 'declaration', tagType: 'css' },
-      { id: 'b8-3', content: 'padding: 20px;', category: 'header', type: 'declaration', tagType: 'css' },
-      { id: 'b8-4', content: 'color: #f5e9d8;', category: 'nav a', type: 'declaration', tagType: 'css' },
-      { id: 'b8-5', content: 'text-decoration: none;', category: 'nav a', type: 'declaration', tagType: 'css' },
-      { id: 'b8-6', content: 'padding: 8px 16px;', category: 'nav a', type: 'declaration', tagType: 'css' },
-      { id: 'b8-7', content: 'background-color: #ffffff;', category: '.hero', type: 'declaration', tagType: 'css' },
-      { id: 'b8-8', content: 'border-radius: 12px;', category: '.hero', type: 'declaration', tagType: 'css' },
-      { id: 'b8-9', content: 'padding: 40px;', category: '.hero', type: 'declaration', tagType: 'css' },
-      { id: 'b8-10', content: 'background-color: #c97a3e;', category: '.button', type: 'declaration', tagType: 'css' },
-      { id: 'b8-11', content: 'color: #ffffff;', category: '.button', type: 'declaration', tagType: 'css' },
-      { id: 'b8-12', content: 'border-radius: 6px;', category: '.button', type: 'declaration', tagType: 'css' }
+      { id: 'b8-1', content: 'background-color: #3d2314;', category: 'tray', label: 'Dark brown bg (header)', type: 'declaration', tagType: 'css' },
+      { id: 'b8-5', content: 'text-decoration: none;', category: 'tray', label: 'Remove underline (nav a)', type: 'declaration', tagType: 'css' },
+      { id: 'b8-7', content: 'background-color: #ffffff;', category: 'tray', label: 'White card bg (.hero)', type: 'declaration', tagType: 'css' },
+      { id: 'b8-10', content: 'background-color: #c97a3e;', category: 'tray', label: 'Amber button bg (.button)', type: 'declaration', tagType: 'css' },
+      { id: 'b8-2', content: 'color: #ffffff;', category: 'tray', label: 'White text (header)', type: 'declaration', tagType: 'css' },
+      { id: 'b8-4', content: 'color: #f5e9d8;', category: 'tray', label: 'Cream link text (nav a)', type: 'declaration', tagType: 'css' },
+      { id: 'b8-8', content: 'border-radius: 12px;', category: 'tray', label: '12px round corners (.hero)', type: 'declaration', tagType: 'css' },
+      { id: 'b8-12', content: 'border-radius: 6px;', category: 'tray', label: '6px button corners (.button)', type: 'declaration', tagType: 'css' },
+      { id: 'b8-3', content: 'padding: 20px;', category: 'tray', label: '20px space (header)', type: 'declaration', tagType: 'css' },
+      { id: 'b8-6', content: 'padding: 8px 16px;', category: 'tray', label: '8px 16px link space (nav a)', type: 'declaration', tagType: 'css' },
+      { id: 'b8-9', content: 'padding: 40px;', category: 'tray', label: '40px hero space (.hero)', type: 'declaration', tagType: 'css' },
+      { id: 'b8-11', content: 'color: #ffffff;', category: 'tray', label: 'White text (.button)', type: 'declaration', tagType: 'css' }
     ]
   },
   {
     id: 9,
-    title: 'Everything Is Squashed Together!',
-    subtitle: 'Master the CSS Box Model using margin, padding, and borders',
+    title: 'Fix the Spacing: Padding & Margin!',
+    subtitle: 'Add inner padding and outer margin so the café boxes aren\'t squashed',
     difficulty: 'Hard',
     category: 'box-model',
     activeTab: 'style.css',
     learningObjectives: [
-      'Understand the CSS Box Model: Content, Padding, Border, and Margin',
-      'Use padding to create internal cushion between text and box borders',
-      'Use margin-bottom and margin-top to create external space between separate boxes'
+      'Understand the difference between padding (inside space) and margin (outside space)',
+      'Use padding to add breathing room inside a card or section',
+      'Use margin-bottom and margin-top to push separate boxes apart'
     ],
     conceptsIntroduced: [
-      'padding (inner spacing inside the border)',
-      'margin-bottom & margin-top (outer spacing between boxes)',
-      'border & border-left (the visible box edge)',
-      'The CSS Box Model hierarchy'
+      'padding (space inside the box edge)',
+      'margin-bottom (space outside below the box)',
+      'margin-top (space outside above the box)'
     ],
     instructions: [
-      'Look at the live preview: the About box, Menu cards, and Contact box have 0px margin and 0px padding, so all the text is crammed against the edges and the boxes are glued together!',
-      'Assign each CSS Box Model declaration from the tray into its matching selector in style.css:',
-      '• .about-box: Needs padding: 30px; (inner cushion) and margin-bottom: 25px; (outer space below).',
-      '• .menu-card: Needs padding: 20px; (inner cushion), margin-bottom: 16px; (space between cards), and border-left: 4px solid #c97a3e; (amber accent bar).',
-      '• .contact-box: Needs padding: 24px; (inner cushion), margin-top: 20px; (outer space above), and border: 2px dashed #c97a3e; (dashed frame).',
-      'Watch the live preview expand with clean breathing room as you add each property!'
+      'Look at the live preview: the About box, Menu cards, and Contact box have 0px padding and 0px margin, so all the text touches the edges and the boxes are glued together!',
+      'Drag or click to place each padding and margin rule into its matching selector:',
+      '• .about-box: Needs padding: 30px; (inside space) and margin-bottom: 25px; (space below).',
+      '• .menu-card: Needs padding: 20px; (inside space) and margin-bottom: 16px; (space between cards).',
+      '• .contact-box: Needs padding: 24px; (inside space) and margin-top: 20px; (space above).',
+      'Watch the preview expand with clean spacing as you add each property!'
     ],
-    funFact: 'In CSS, every single HTML element is treated as a rectangular box with four layers from inside out: Content → Padding (inner cushion) → Border (the frame) → Margin (outer personal space)!',
+    funFact: 'A quick way to remember the difference: Padding is like the soft stuffing INSIDE a winter jacket, while Margin is the personal space OUTSIDE between you and the next person in line!',
     hints: [
-      'Remember: padding creates space INSIDE the box border, while margin creates space OUTSIDE the box border.',
-      'Check the numbers in the instructions: .about-box gets 30px padding & 25px margin-bottom; .menu-card gets 20px padding, 16px margin-bottom, and border-left.',
-      '.contact-box gets padding: 24px;, margin-top: 20px;, and border: 2px dashed #c97a3e;.'
+      'padding adds space INSIDE the box; margin adds space OUTSIDE between separate boxes.',
+      '.about-box needs padding: 30px; and margin-bottom: 25px;.',
+      '.menu-card needs padding: 20px; and margin-bottom: 16px; — and .contact-box needs padding: 24px; and margin-top: 20px;.'
     ],
     previewMode: 'responsive',
     initialBlocks: [
-      { id: 'b9-about-pad', content: 'padding: 30px;', category: 'tray', type: 'declaration', tagType: 'css', explanationKey: 'padding', label: 'Inner Cushion (30px)' },
-      { id: 'b9-card-mar', content: 'margin-bottom: 16px;', category: 'tray', type: 'declaration', tagType: 'css', explanationKey: 'margin', label: 'Gap Between Cards (16px)' },
-      { id: 'b9-contact-bor', content: 'border: 2px dashed #c97a3e;', category: 'tray', type: 'declaration', tagType: 'css', explanationKey: 'border', label: 'Dashed Box Frame' },
-      { id: 'b9-card-pad', content: 'padding: 20px;', category: 'tray', type: 'declaration', tagType: 'css', explanationKey: 'padding', label: 'Card Inner Cushion (20px)' },
-      { id: 'b9-about-mar', content: 'margin-bottom: 25px;', category: 'tray', type: 'declaration', tagType: 'css', explanationKey: 'margin', label: 'Outer Space Below (25px)' },
-      { id: 'b9-contact-pad', content: 'padding: 24px;', category: 'tray', type: 'declaration', tagType: 'css', explanationKey: 'padding', label: 'Contact Inner Cushion (24px)' },
-      { id: 'b9-card-bor', content: 'border-left: 4px solid #c97a3e;', category: 'tray', type: 'declaration', tagType: 'css', explanationKey: 'border', label: 'Amber Left Accent Bar' },
-      { id: 'b9-contact-mar', content: 'margin-top: 20px;', category: 'tray', type: 'declaration', tagType: 'css', explanationKey: 'margin', label: 'Outer Space Above (20px)' }
+      { id: 'b9-about-pad', content: 'padding: 30px;', category: 'tray', type: 'declaration', tagType: 'css', explanationKey: 'padding', label: '30px Inside Space (.about-box)' },
+      { id: 'b9-card-mar', content: 'margin-bottom: 16px;', category: 'tray', type: 'declaration', tagType: 'css', explanationKey: 'margin', label: '16px Space Between Cards (.menu-card)' },
+      { id: 'b9-card-pad', content: 'padding: 20px;', category: 'tray', type: 'declaration', tagType: 'css', explanationKey: 'padding', label: '20px Card Inside Space (.menu-card)' },
+      { id: 'b9-about-mar', content: 'margin-bottom: 25px;', category: 'tray', type: 'declaration', tagType: 'css', explanationKey: 'margin', label: '25px Space Below (.about-box)' },
+      { id: 'b9-contact-pad', content: 'padding: 24px;', category: 'tray', type: 'declaration', tagType: 'css', explanationKey: 'padding', label: '24px Inside Space (.contact-box)' },
+      { id: 'b9-contact-mar', content: 'margin-top: 20px;', category: 'tray', type: 'declaration', tagType: 'css', explanationKey: 'margin', label: '20px Space Above (.contact-box)' }
     ]
   },
   {
     id: 10,
     title: 'SAVE BRISTOL BREW CAFÉ!',
-    subtitle: 'Final Mission: Inspect the code and repair 10 real-world bugs in index.html & style.css',
+    subtitle: 'Final Mission: Type in the code editor to repair 10 bugs in index.html & style.css',
     difficulty: 'Advanced Beginner',
     category: 'multi-bug',
     activeTab: 'index.html',
     learningObjectives: [
       'Synthesise all HTML and CSS skills learned throughout the course',
-      'Read real HTML and CSS source code to spot syntax, path, and box-model bugs',
-      'Observe live visual changes in the webpage preview as each line of code is repaired'
+      'Edit broken HTML and CSS code directly with your keyboard to fix syntax, path, and spacing bugs',
+      'Observe live visual changes in the webpage preview as you type each fix'
     ],
     conceptsIntroduced: [
-      'Full-stack source code debugging',
-      'Before & after code comparison',
-      'Validation of HTML5 and CSS standards',
+      'Live keyboard code debugging',
+      'HTML tag and attribute syntax repair',
+      'CSS selector, semicolon, and padding/margin repair',
       'Production readiness and website export'
     ],
     instructions: [
-      'CRITICAL MISSION: The Bristol Brew Café website was saved with 10 bugs across index.html and style.css!',
-      'Inspect the highlighted error lines directly inside the index.html and style.css tabs and click "Fix in Code" on each buggy line:',
+      'CRITICAL MISSION: The Bristol Brew Café website has 10 bugs across index.html and style.css!',
+      'Click directly into the red highlighted code boxes and TYPE with your keyboard to fix each error:',
       '• In index.html (7 Bugs):',
-      '  1. Missing closing </main> tag before <footer>',
-      '  2. Broken CSS stylesheet link filename (styles.css → style.css)',
-      '  3. <header> accidentally placed outside before <body>',
-      '  4. <nav> placed outside the <header>',
-      '  5. Broken hero coffee image path (coffee.jpg → images/coffee.jpg)',
-      '  6. Missing accessible alt attribute on homemade cake image',
-      '  10. Broken Contact navigation link (href="#contactus" → href="#contact")',
+      '  1. Fix closing </main> tag before <footer> (change <main> to </main>)',
+      '  2. Fix CSS filename typo (change href="styles.css" to href="style.css")',
+      '  3. Fix opening header tag typo (change <hedaer> to <header>)',
+      '  4. Fix opening nav tag typo (change <navv> to <nav>)',
+      '  5. Fix coffee image path (change src="coffee.jpg" to src="images/coffee.jpg")',
+      '  6. Add missing alt text on cake image (e.g. <img src="images/cake.jpg" alt="Cake">)',
+      '  10. Fix Contact link href (change href="#contactus" to href="#contact")',
       '• In style.css (3 Bugs):',
-      '  7. Missing dot on CSS class selector (hero → .hero)',
-      '  8. Missing semicolon ; after header padding (breaking the dark header background)',
-      '  9. Squashed 0px margin and padding on .menu-card (0px → 24px padding & 16px margin-bottom)',
-      'Watch both the source code and the live website preview heal each time you fix a line!'
+      '  7. Add missing dot on hero class selector (change hero { to .hero {)',
+      '  8. Add missing semicolon ; at the end of padding: 20px 40px;',
+      '  9. Change 0px padding and margin-bottom on .menu-card (e.g. padding: 24px; margin-bottom: 16px;)',
+      'As soon as you type the valid code, the line turns green and the live preview heals!'
     ],
     funFact: 'In 2026, the average professional developer spends approximately 40% of their working hours reading existing code and fixing bugs rather than writing new code from scratch!',
     hints: [
+      'Click inside any red highlighted code line and type with your keyboard to fix the typo.',
       'Switch between the index.html tab (7 bugs) and the style.css tab (3 bugs) at the top of the Code Editor.',
-      'Look for the red highlighted lines in the code—each shows the broken code and lets you fix it in place.',
-      'Watch the Live Preview on the right after every single fix to see how that specific line of code affects the website!'
+      'If you get stuck on a line, read the red hint right below that input box—it tells you exactly what to type!'
     ],
     previewMode: 'final',
     initialBlocks: []

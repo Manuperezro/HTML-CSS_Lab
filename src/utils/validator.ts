@@ -343,7 +343,7 @@ export function validateChallenge(
     case 6: {
       // Challenge 6: Connect CSS file
       // Option b6-correct is: <link rel="stylesheet" href="style.css">
-      const selectedBlock = blocks[0];
+      const selectedBlock = blocks.find(b => b.category === 'selected') || (blocks.length === 1 ? blocks[0] : undefined);
 
       if (selectedBlock && selectedBlock.id === 'b6-correct') {
         return {
@@ -360,18 +360,20 @@ export function validateChallenge(
         };
       }
 
-      let title = 'CSS Connection Failed';
+      let title = 'CSS Not Connected Yet';
       let msg = '';
-      if (selectedBlock?.id === 'b6-script-wrong') {
+      if (!selectedBlock) {
+        msg = 'Click one of the three options in the editor to place it on line 6 inside <head>!';
+      } else if (selectedBlock.id === 'b6-script-wrong') {
         msg = '<script src="style.css"> is used to load JavaScript code files, not CSS stylesheets! Browsers will ignore stylesheets loaded via script tags.';
-      } else if (selectedBlock?.id === 'b6-typo-wrong') {
+      } else if (selectedBlock.id === 'b6-typo-wrong') {
         msg = 'Almost! Your link says href="styles.css" with an extra "s". Look at the File Explorer on the left: the file is called style.css. Even a one-letter typo prevents styles from loading!';
       } else {
-        msg = 'Choose the correct block that links style.css as a stylesheet and place it at the top.';
+        msg = 'Choose Option A (<link rel="stylesheet" href="style.css">) to connect the stylesheet.';
       }
 
       if (attemptCount === 1) {
-        return { isValid: false, attemptNumber: 1, messageType: 'conceptual', title, message: 'Check the file name in the explorer and remember which HTML tag links stylesheets.' };
+        return { isValid: false, attemptNumber: 1, messageType: 'conceptual', title, message: msg || 'Check the file name in the explorer and remember which HTML tag links stylesheets.' };
       } else if (attemptCount === 2) {
         return { isValid: false, attemptNumber: 2, messageType: 'specific', title, message: msg };
       } else {
@@ -380,7 +382,7 @@ export function validateChallenge(
           attemptNumber: attemptCount,
           messageType: 'visual',
           title,
-          message: 'To link a CSS stylesheet, use:',
+          message: 'To link a CSS stylesheet, click Option A:',
           visualStructureHint: '<link rel="stylesheet" href="style.css">'
         };
       }
@@ -480,10 +482,10 @@ nav a  { color: #f5e9d8; text-decoration: none; padding: 8px 16px; }
     }
 
     case 9: {
-      // Challenge 9: CSS Box Model (Margin, Padding & Borders)
+      // Challenge 9: Padding & Margin
       // .about-box: padding: 30px; and margin-bottom: 25px;
-      // .menu-card: padding: 20px;, margin-bottom: 16px;, border-left: 4px solid #c97a3e;
-      // .contact-box: padding: 24px;, margin-top: 20px;, border: 2px dashed #c97a3e;
+      // .menu-card: padding: 20px; and margin-bottom: 16px;
+      // .contact-box: padding: 24px; and margin-top: 20px;
       const aboutBlocks = blocks.filter(b => b.category === '.about-box').map(b => b.content);
       const cardBlocks = blocks.filter(b => b.category === '.menu-card').map(b => b.content);
       const contactBlocks = blocks.filter(b => b.category === '.contact-box').map(b => b.content);
@@ -493,35 +495,32 @@ nav a  { color: #f5e9d8; text-decoration: none; padding: 8px 16px; }
 
       const hasCardPad = cardBlocks.some(c => c.includes('padding: 20px;'));
       const hasCardMar = cardBlocks.some(c => c.includes('margin-bottom: 16px;'));
-      const hasCardBor = cardBlocks.some(c => c.includes('border-left: 4px solid #c97a3e;'));
 
       const hasContactPad = contactBlocks.some(c => c.includes('padding: 24px;'));
       const hasContactMar = contactBlocks.some(c => c.includes('margin-top: 20px;'));
-      const hasContactBor = contactBlocks.some(c => c.includes('border: 2px dashed #c97a3e;'));
 
       const isAllValid = hasAboutPad && hasAboutMar &&
-                         hasCardPad && hasCardMar && hasCardBor &&
-                         hasContactPad && hasContactMar && hasContactBor;
+                         hasCardPad && hasCardMar &&
+                         hasContactPad && hasContactMar;
 
       if (isAllValid) {
         return {
           isValid: true,
           attemptNumber: attemptCount,
           messageType: 'success',
-          title: 'CSS Box Model Mastered!',
-          message: 'Sensational work! Look at the live preview: every section and menu card now has comfortable inner padding, clean outer margins separating the boxes, and crisp accent borders!',
+          title: 'Padding & Margin Applied Perfectly!',
+          message: 'Sensational work! Look at the live preview: every section and menu card now has comfortable inner padding and clean outer margins separating the boxes!',
           positiveHighlights: [
-            'padding creates internal cushion between text and box borders',
-            'margin-bottom and margin-top create external breathing room between boxes',
-            'border-left and dashed border frame the cards and contact box cleanly',
-            'All 8 Box Model declarations are assigned to their matching selectors'
+            'padding adds internal space between text and the box edges',
+            'margin-bottom and margin-top add external space between separate boxes',
+            'All 6 padding and margin rules are placed in their matching selectors'
           ]
         };
       }
 
       const trayCount = blocks.filter(b => !b.category || b.category === 'tray').length;
-      let conceptual = 'Think about the CSS Box Model layers: padding creates space INSIDE the box border, border draws the frame, and margin creates space OUTSIDE between separate boxes.';
-      let specific = 'Assign all 8 declarations: .about-box needs 30px padding & 25px margin-bottom; .menu-card needs 20px padding, 16px margin-bottom & 4px solid border-left; .contact-box needs 24px padding, 20px margin-top & 2px dashed border.';
+      let conceptual = 'Remember: padding creates space INSIDE a box, while margin creates space OUTSIDE between separate boxes.';
+      let specific = 'Assign all 6 rules: .about-box gets padding: 30px; & margin-bottom: 25px;; .menu-card gets padding: 20px; & margin-bottom: 16px;; .contact-box gets padding: 24px; & margin-top: 20px;.';
       let visual = `.about-box {
   padding: 30px;
   margin-bottom: 25px;
@@ -530,22 +529,20 @@ nav a  { color: #f5e9d8; text-decoration: none; padding: 8px 16px; }
 .menu-card {
   padding: 20px;
   margin-bottom: 16px;
-  border-left: 4px solid #c97a3e;
 }
 
 .contact-box {
   padding: 24px;
   margin-top: 20px;
-  border: 2px dashed #c97a3e;
 }`;
 
       if (trayCount > 0) {
-        specific = `You still have ${trayCount} declaration(s) sitting in the Box Model Tray! Place all 8 declarations into .about-box, .menu-card, and .contact-box.`;
+        specific = `You still have ${trayCount} declaration(s) left in the tray! Place all 6 padding and margin declarations into .about-box, .menu-card, and .contact-box.`;
       }
 
-      if (attemptCount === 1) return { isValid: false, attemptNumber: 1, messageType: 'conceptual', title: 'Margin vs Padding Concept', message: conceptual };
-      if (attemptCount === 2) return { isValid: false, attemptNumber: 2, messageType: 'specific', title: 'Box Model Assignment Clue', message: specific };
-      return { isValid: false, attemptNumber: attemptCount, messageType: 'visual', title: 'Target Box Model CSS', message: 'Organise your CSS Box Model rules like this:', visualStructureHint: visual };
+      if (attemptCount === 1) return { isValid: false, attemptNumber: 1, messageType: 'conceptual', title: 'Padding vs Margin Clue', message: conceptual };
+      if (attemptCount === 2) return { isValid: false, attemptNumber: 2, messageType: 'specific', title: 'Spacing Assignment Clue', message: specific };
+      return { isValid: false, attemptNumber: attemptCount, messageType: 'visual', title: 'Target Padding & Margin CSS', message: 'Place the rules to match this CSS:', visualStructureHint: visual };
     }
 
     case 10: {

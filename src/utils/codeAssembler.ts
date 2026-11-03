@@ -475,16 +475,16 @@ export function assemblePreviewContent(
 
     case 6: {
       // Challenge 6: Connect CSS file
-      // If student selected the correct link block (<link rel="stylesheet" href="style.css">)
-      const correctBlock = blocks.find(b => b.id === 'b6-correct');
-      const isConnected = correctBlock && blocks[0]?.id === 'b6-correct';
+      const selectedBlock = blocks.find(b => b.category === 'selected') || (blocks.length === 1 ? blocks[0] : undefined);
+      const isConnected = selectedBlock?.id === 'b6-correct';
+      const headLine = selectedBlock ? `  ${selectedBlock.content}` : '  <!-- No stylesheet linked yet -->';
 
       const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Bristol Brew Café</title>
-  ${blocks.map(b => b.content).join('\n')}
+${headLine}
   ${isConnected ? `<style>${FINAL_VALID_CSS}</style>` : ''}
 </head>
 <body>
@@ -769,18 +769,18 @@ ${contactDeclarations}
           headerInsideHtml = `<header>
     <h1>Bristol Brew Café</h1>
   </header>
-  <div class="bug-banner-inline">⚠️ Bug #4: &lt;nav&gt; is placed outside &lt;header&gt;</div>
+  <div class="bug-banner-inline">⚠️ Bug #4: Broken &lt;navv&gt; tag — change &lt;navv&gt; to &lt;nav&gt; in index.html</div>
   ${navBlock}`;
         }
       } else {
-        // Bug 3: Header is outside body!
-        headerOutsideHtml = `<div class="bug-banner-outside">⚠️ Bug #3: &lt;header&gt; is placed outside &lt;body&gt; (before &lt;body&gt; tag)!</div>
+        // Bug 3: Broken <hedaer> tag!
+        headerOutsideHtml = `<div class="bug-banner-outside">⚠️ Bug #3: Typo in &lt;hedaer&gt; tag — change &lt;hedaer&gt; to &lt;header&gt; in index.html!</div>
 <header class="header-outside-bug">
   <h1>Bristol Brew Café</h1>
   ${bugState.bug4_navInsideHeader ? navBlock : ''}
 </header>`;
         if (!bugState.bug4_navInsideHeader) {
-          headerInsideHtml = `<div class="bug-banner-inline">⚠️ Bug #4: &lt;nav&gt; is placed outside &lt;header&gt;</div>
+          headerInsideHtml = `<div class="bug-banner-inline">⚠️ Bug #4: Broken &lt;navv&gt; tag — change &lt;navv&gt; to &lt;nav&gt; in index.html</div>
   ${navBlock}`;
         }
       }
