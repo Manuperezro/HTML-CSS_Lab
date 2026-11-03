@@ -23,8 +23,8 @@ export const LivePreview: React.FC<LivePreviewProps> = ({
   const getCombinedDocument = () => {
     let doc = htmlContent;
 
-    // If CSS is present and not already embedded in <style>
-    if (cssContent && !doc.includes(cssContent)) {
+    // If CSS is present and no <style> block is already embedded in htmlContent
+    if (cssContent && !doc.includes('<style>') && !doc.includes(cssContent)) {
       if (doc.includes('</head>')) {
         doc = doc.replace('</head>', `<style>${cssContent}</style></head>`);
       } else if (doc.includes('<body>')) {

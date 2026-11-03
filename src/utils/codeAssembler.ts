@@ -266,13 +266,8 @@ export function assemblePreviewContent(
   challengeId: ChallengeId,
   blocks: CodeBlock[],
   bugState: BugFixState = INITIAL_BUG_STATE,
-  isCompleted: boolean = false
+  _isCompleted: boolean = false
 ): { html: string; css: string } {
-  // If challenge is already completed or challenge 10 is all green, render full valid site
-  if (isCompleted && challengeId === 10) {
-    return { html: FINAL_VALID_HTML, css: FINAL_VALID_CSS };
-  }
-
   switch (challengeId) {
     case 1: {
       // Challenge 1: File organization.
@@ -635,80 +630,131 @@ nav a {
     }
 
     case 9: {
-      // Challenge 9: Flexbox menu grid
-      const gridDeclarations = blocks
-        .filter(b => b.id.startsWith('b9-grid'))
-        .map(b => b.content)
+      // Challenge 9: CSS Box Model (Margin, Padding & Borders)
+      const aboutDeclarations = blocks
+        .filter(b => b.category === '.about-box')
+        .map(b => `  ${b.content}`)
         .join('\n');
 
       const cardDeclarations = blocks
-        .filter(b => b.id.startsWith('b9-card'))
-        .map(b => b.content)
+        .filter(b => b.category === '.menu-card')
+        .map(b => `  ${b.content}`)
+        .join('\n');
+
+      const contactDeclarations = blocks
+        .filter(b => b.category === '.contact-box')
+        .map(b => `  ${b.content}`)
         .join('\n');
 
       const dynamicCss = `
-body { font-family: sans-serif; background: #f7f3ed; margin: 0; padding: 20px; }
-.menu-grid {
-  ${gridDeclarations}
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: #f7f3ed;
+  color: #2b1810;
+  margin: 0;
+  padding: 16px;
 }
-.menu-card {
-  background: white;
-  padding: 20px;
+
+.about-box {
+  background: #ffffff;
+  border: 1px solid #d6c7b8;
   border-radius: 8px;
-  border-left: 4px solid #c97a3e;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  ${cardDeclarations}
+  padding: 0px;
+  margin-bottom: 0px;
+${aboutDeclarations}
 }
-.menu-card h3 { margin-top: 0; color: #3d2314; }
-.menu-card .price { font-weight: bold; color: #c97a3e; font-size: 1.15rem; }
+
+.about-box h2, .menu-card h3, .contact-box h2 {
+  margin: 0 0 6px 0;
+  color: #3d2314;
+}
+
+.about-box p, .menu-card p, .contact-box p {
+  margin: 0;
+  line-height: 1.45;
+}
+
+.menu-card {
+  background: #ffffff;
+  border: 1px solid #e2d5c6;
+  border-radius: 6px;
+  padding: 0px;
+  margin-bottom: 0px;
+${cardDeclarations}
+}
+
+.menu-card .price {
+  font-weight: 800;
+  color: #c97a3e;
+  margin-top: 4px;
+}
+
+.contact-box {
+  background: #fffaf3;
+  border: 1px solid #e2d5c6;
+  border-radius: 8px;
+  padding: 0px;
+  margin-top: 0px;
+${contactDeclarations}
+}
 `;
 
       const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Bristol Brew Café</title>
+  <title>Bristol Brew Café - Box Model Preview</title>
   <style>${dynamicCss}</style>
 </head>
 <body>
-  <h2 style="color: #3d2314;">Our Seasonal Menu (Flexbox Test)</h2>
-  <div class="menu-grid">
-    <article class="menu-card">
-      <h3>Flat White</h3>
-      <p>Rich espresso with silky steamed milk.</p>
-      <p class="price">£3.50</p>
-    </article>
-    <article class="menu-card">
-      <h3>Cappuccino</h3>
-      <p>Velvety froth with rich cocoa dusting.</p>
-      <p class="price">£3.60</p>
-    </article>
-    <article class="menu-card">
-      <h3>Homemade Cake</h3>
-      <p>Freshly baked artisan seasonal sponge.</p>
-      <p class="price">£4.00</p>
-    </article>
-  </div>
+  <section class="about-box">
+    <h2>About Bristol Brew Café</h2>
+    <p>An independent coffee haven in the heart of Bristol serving single-origin roasts and homemade cakes.</p>
+  </section>
+
+  <article class="menu-card">
+    <h3>Flat White</h3>
+    <p>Rich double espresso with velvety steamed milk.</p>
+    <p class="price">£3.50</p>
+  </article>
+
+  <article class="menu-card">
+    <h3>Cappuccino</h3>
+    <p>Velvety micro-foam with organic cocoa dusting.</p>
+    <p class="price">£3.60</p>
+  </article>
+
+  <article class="menu-card">
+    <h3>Homemade Cake</h3>
+    <p>Freshly baked artisan seasonal spiced sponge.</p>
+    <p class="price">£4.00</p>
+  </article>
+
+  <section class="contact-box">
+    <h2>Visit Us at the Harbourside</h2>
+    <p>📍 14 Harbourside Walk, Bristol • Open Daily 7:30am – 6:00pm</p>
+  </section>
 </body>
 </html>`;
       return { html, css: dynamicCss };
     }
 
     case 10: {
-      // Challenge 10: 10 Bugs
+      // Challenge 10: 10 Bugs with clear, immediate visual feedback for every bug
       const cssLinkTag = bugState.bug2_cssLink
         ? '<link rel="stylesheet" href="style.css">'
-        : '<link rel="stylesheet" href="styles.css">'; // broken stylesheet link
+        : '<link rel="stylesheet" href="styles.css">';
 
-      const coffeePath = bugState.bug5_coffeePath ? 'images/coffee.jpg' : 'coffee.jpg';
-      const cakeAlt = bugState.bug6_cakeAlt ? 'alt="Homemade artisan cake"' : '';
       const contactHref = bugState.bug10_contactLink ? '#contact' : '#contactus';
+      const contactLinkLabel = bugState.bug10_contactLink
+        ? 'Contact'
+        : 'Contact <span style="background:#ef4444;color:#fff;font-size:0.68rem;padding:1px 5px;border-radius:4px;margin-left:4px;">⚠️ #contactus</span>';
 
-      const navBlock = `<nav>
+      const navBlock = `<nav class="${bugState.bug4_navInsideHeader ? 'nav-inside' : 'nav-outside-bug'}">
       <a href="#home">Home</a>
       <a href="#about">About</a>
       <a href="#menu">Menu</a>
-      <a href="${contactHref}">Contact</a>
+      <a href="${contactHref}">${contactLinkLabel}</a>
     </nav>`;
 
       let headerInsideHtml = '';
@@ -723,37 +769,58 @@ body { font-family: sans-serif; background: #f7f3ed; margin: 0; padding: 20px; }
           headerInsideHtml = `<header>
     <h1>Bristol Brew Café</h1>
   </header>
+  <div class="bug-banner-inline">⚠️ Bug #4: &lt;nav&gt; is placed outside &lt;header&gt;</div>
   ${navBlock}`;
         }
       } else {
         // Bug 3: Header is outside body!
-        headerOutsideHtml = `<header>
+        headerOutsideHtml = `<div class="bug-banner-outside">⚠️ Bug #3: &lt;header&gt; is placed outside &lt;body&gt; (before &lt;body&gt; tag)!</div>
+<header class="header-outside-bug">
   <h1>Bristol Brew Café</h1>
   ${bugState.bug4_navInsideHeader ? navBlock : ''}
 </header>`;
         if (!bugState.bug4_navInsideHeader) {
-          headerInsideHtml = navBlock;
+          headerInsideHtml = `<div class="bug-banner-inline">⚠️ Bug #4: &lt;nav&gt; is placed outside &lt;header&gt;</div>
+  ${navBlock}`;
         }
       }
 
-      const mainClose = bugState.bug1_mainClose ? '</main>' : '<!-- Missing </main> tag! -->';
+      const heroImageHtml = bugState.bug5_coffeePath
+        ? '<img src="images/coffee.jpg" alt="Freshly prepared coffee">'
+        : `<div class="broken-img-placeholder">
+            <div style="font-size:1.5rem;margin-bottom:4px;">🖼️❌</div>
+            <strong>Broken Image (Bug #5): src="coffee.jpg"</strong>
+            <div style="font-size:0.8rem;margin-top:2px;">File not found in root folder. Should be <code>images/coffee.jpg</code></div>
+          </div>`;
+
+      const cakeImageHtml = bugState.bug6_cakeAlt
+        ? `<img src="images/cake.jpg" alt="Homemade artisan cake" style="width: 100%; max-height: 150px; object-fit: cover; border-radius: 6px; margin: 10px 0;">`
+        : `<div style="border: 2px dashed #ef4444; border-radius: 6px; padding: 6px; margin: 8px 0; background: #fef2f2;">
+            <img src="images/cake.jpg" style="width: 100%; max-height: 130px; object-fit: cover; border-radius: 4px; display: block;">
+            <div style="color: #b91c1c; font-size: 0.74rem; font-weight: 700; margin-top: 4px;">
+              ⚠️ Bug #6: Missing accessible alt="..." attribute on &lt;img&gt;
+            </div>
+          </div>`;
 
       const heroSelector = bugState.bug7_heroSelector ? '.hero' : 'hero';
       const cssSemicolon = bugState.bug8_cssSemicolon ? ';' : '';
-      const flexDisplay = bugState.bug9_flexDisplay ? 'display: flex;' : 'display: grid-flex;';
+      const cardSpacingCss = bugState.bug9_flexDisplay
+        ? 'padding: 24px;\n  margin-bottom: 16px;'
+        : 'padding: 0px;\n  margin-bottom: 0px;';
 
+      // Exported CSS string for style.css inspection
       const assembledCss = `body {
   background-color: #f7f3ed;
   font-family: 'Plus Jakarta Sans', Arial, sans-serif;
-  color: #2b1810${cssSemicolon}
+  color: #2b1810;
   margin: 0;
   padding: 0;
 }
 
 header {
+  padding: 20px 40px${cssSemicolon}
   background-color: #3d2314;
   color: #ffffff;
-  padding: 20px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -777,7 +844,7 @@ ${heroSelector} {
 
 .hero img {
   max-width: 100%;
-  max-height: 350px;
+  max-height: 320px;
   border-radius: 8px;
   object-fit: cover;
   margin: 15px 0;
@@ -794,29 +861,33 @@ ${heroSelector} {
 }
 
 #about, #menu, #contact {
-  padding: 20px 40px;
+  background: #ffffff;
+  padding: 28px;
+  border-radius: 12px;
+  margin: 20px 40px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
 }
 
 #about img {
   width: 100%;
-  max-height: 320px;
+  max-height: 280px;
   object-fit: cover;
   border-radius: 8px;
 }
 
 .menu-grid {
-  ${flexDisplay}
+  display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: ${bugState.bug9_flexDisplay ? '20px' : '0px'};
 }
 
 .menu-card {
   flex: 1;
   min-width: 220px;
-  background: #ffffff;
-  padding: 24px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  background: #fbf9f6;
+  ${cardSpacingCss}
+  border-radius: ${bugState.bug9_flexDisplay ? '8px' : '0px'};
+  border: 1px solid #e5dec9;
   border-left: 4px solid #c97a3e;
 }
 
@@ -834,8 +905,201 @@ footer {
   margin-top: 40px;
 }`;
 
-      // If bug2 is fixed, apply CSS in style block or simulated link
-      const styleTag = bugState.bug2_cssLink ? `<style>${assembledCss}</style>` : '';
+      // Visual styles rendered inside iframe so EVERY bug toggle has an unmistakable visual change
+      const previewRenderCss = `
+body {
+  background-color: ${bugState.bug2_cssLink ? '#f7f3ed' : '#e2e8f0'};
+  font-family: ${bugState.bug2_cssLink ? "'Plus Jakarta Sans', Arial, sans-serif" : "'Times New Roman', serif"};
+  color: #2b1810;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  ${bugState.bug8_cssSemicolon
+    ? 'padding: 20px 40px; background-color: #3d2314; color: #ffffff;'
+    : 'padding: 8px 16px; background-color: #fef2f2; color: #991b1b; border-bottom: 2px dashed #ef4444;'}
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.header-outside-bug {
+  margin: 8px;
+  border: 2px dashed #ef4444 !important;
+  opacity: 0.85;
+}
+
+nav a {
+  color: ${bugState.bug8_cssSemicolon && bugState.bug4_navInsideHeader ? '#f5e9d8' : '#7c2d12'};
+  text-decoration: ${bugState.bug2_cssLink ? 'none' : 'underline'};
+  margin-left: 16px;
+  font-weight: 600;
+}
+
+.nav-outside-bug {
+  background: #fffbeb;
+  border: 2px dashed #f59e0b;
+  padding: 10px 20px;
+  margin: 0 24px 12px 24px;
+  border-radius: 6px;
+}
+
+main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 12px 24px;
+  ${!bugState.bug1_mainClose ? 'border: 2px dashed #ef4444; background: rgba(254, 242, 242, 0.45); border-radius: 12px; margin-bottom: 20px;' : ''}
+}
+
+${bugState.bug7_heroSelector ? '.hero' : 'hero'} {
+  background-color: #ffffff;
+  padding: 36px;
+  text-align: center;
+  border-radius: 12px;
+  margin: 16px 0 28px 0;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.07);
+}
+
+${!bugState.bug7_heroSelector ? `
+.hero {
+  background-color: transparent;
+  padding: 10px;
+  text-align: left;
+  border: 2px dashed #ef4444;
+  margin: 12px 0;
+}
+` : ''}
+
+.hero img {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin: 12px 0;
+}
+
+.broken-img-placeholder {
+  background: #fef2f2;
+  border: 2px dashed #ef4444;
+  color: #991b1b;
+  padding: 28px 16px;
+  border-radius: 8px;
+  margin: 14px auto;
+  max-width: 480px;
+  text-align: center;
+}
+
+.button {
+  display: inline-block;
+  background-color: ${bugState.bug2_cssLink ? '#c97a3e' : '#94a3b8'};
+  color: #ffffff;
+  padding: ${bugState.bug2_cssLink ? '12px 28px' : '4px 10px'};
+  border-radius: ${bugState.bug2_cssLink ? '6px' : '0px'};
+  text-decoration: none;
+  font-weight: 700;
+  margin-top: 8px;
+}
+
+#about, #menu, #contact {
+  background: ${bugState.bug2_cssLink ? '#ffffff' : '#f8fafc'};
+  padding: 26px;
+  border-radius: ${bugState.bug2_cssLink ? '12px' : '0px'};
+  margin: 20px 0;
+  box-shadow: ${bugState.bug2_cssLink ? '0 2px 10px rgba(0,0,0,0.04)' : 'none'};
+  border: ${bugState.bug2_cssLink ? 'none' : '1px solid #cbd5e1'};
+}
+
+#about img {
+  width: 100%;
+  max-height: 260px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin: 10px 0;
+}
+
+.menu-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: ${bugState.bug9_flexDisplay ? '20px' : '0px'};
+}
+
+.menu-card {
+  flex: 1;
+  min-width: 200px;
+  background: #fbf9f6;
+  ${cardSpacingCss}
+  border-radius: ${bugState.bug9_flexDisplay ? '8px' : '0px'};
+  border: 1px solid #e2d5c6;
+  border-left: 4px solid #c97a3e;
+}
+
+.menu-card h3, .menu-card p {
+  margin: ${bugState.bug9_flexDisplay ? '0 0 8px 0' : '0'};
+}
+
+.menu-card .price {
+  font-weight: 700;
+  color: #c97a3e;
+  font-size: 1.15rem;
+  margin: 0;
+}
+
+.bug-banner-outside, .bug-banner-inline {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  padding: 6px 14px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-family: monospace;
+  text-align: center;
+}
+
+footer {
+  text-align: center;
+  padding: ${bugState.bug1_mainClose ? '30px' : '14px'};
+  background-color: ${bugState.bug1_mainClose ? '#2b1810' : '#7f1d1d'};
+  color: #f5e9d8;
+  margin-top: ${bugState.bug1_mainClose ? '40px' : '10px'};
+  border-radius: ${bugState.bug1_mainClose ? '0' : '8px'};
+}
+`;
+
+      const css404Banner = !bugState.bug2_cssLink
+        ? `<div class="bug-banner-outside">⚠️ Bug #2: &lt;link href="styles.css"&gt; failed to load (404 Not Found) — File is named "style.css"</div>`
+        : '';
+
+      const semicolonBanner = !bugState.bug8_cssSemicolon
+        ? `<div class="bug-banner-inline">⚠️ Bug #8: Missing semicolon (;) after padding in header CSS broke background-color: #3d2314!</div>`
+        : '';
+
+      const heroSelectorBanner = !bugState.bug7_heroSelector
+        ? `<div style="color:#b91c1c;font-size:0.78rem;font-weight:700;font-family:monospace;margin-bottom:6px;">⚠️ Bug #7: Selector "hero" is missing its dot (.hero) in style.css!</div>`
+        : '';
+
+      const cardSpacingBanner = !bugState.bug9_flexDisplay
+        ? `<div style="color:#b91c1c;font-size:0.78rem;font-weight:700;font-family:monospace;margin-bottom:8px;">⚠️ Bug #9: .menu-card has 0px padding and 0px margin-bottom — cards are squashed together!</div>`
+        : '';
+
+      const contactAnchorBanner = !bugState.bug10_contactLink
+        ? `<div style="color:#b91c1c;font-size:0.78rem;font-weight:700;font-family:monospace;margin-top:6px;">⚠️ Bug #10: Nav link points to href="#contactus", which doesn't match id="contact"!</div>`
+        : '';
+
+      const footerBlock = `<footer>
+    ${!bugState.bug1_mainClose ? '<div style="font-size:0.78rem;font-weight:700;color:#fecaca;margin-bottom:4px;">⚠️ Bug #1: Missing &lt;/main&gt; tag — &lt;footer&gt; is trapped inside &lt;main&gt;!</div>' : ''}
+    <p style="margin:0;">&copy; 2026 Bristol Brew Café. All rights reserved.</p>
+  </footer>`;
+
+      const mainAndFooterHtml = bugState.bug1_mainClose
+        ? `  </main>\n  ${footerBlock}`
+        : `    ${footerBlock}\n  <!-- Missing </main> tag! -->\n  </main>`;
 
       const assembledHtml = `<!DOCTYPE html>
 <html lang="en">
@@ -843,16 +1107,19 @@ footer {
   <meta charset="UTF-8">
   <title>Bristol Brew Café</title>
   ${cssLinkTag}
-  ${styleTag}
+  <style>${previewRenderCss}</style>
 </head>
+${css404Banner}
 ${headerOutsideHtml}
 <body>
+  ${semicolonBanner}
   ${headerInsideHtml}
   <main>
     <section id="home" class="hero">
+      ${heroSelectorBanner}
       <h2>Fresh Coffee in the Heart of Bristol</h2>
       <p>Enjoy freshly brewed coffee and homemade cakes.</p>
-      <img src="${coffeePath}" alt="Freshly prepared coffee">
+      ${heroImageHtml}
       <br>
       <a href="#menu" class="button">Explore Our Menu</a>
     </section>
@@ -863,6 +1130,7 @@ ${headerOutsideHtml}
     </section>
     <section id="menu">
       <h2>Our Menu</h2>
+      ${cardSpacingBanner}
       <div class="menu-grid">
         <article class="menu-card">
           <h3>Flat White</h3>
@@ -877,7 +1145,7 @@ ${headerOutsideHtml}
         <article class="menu-card">
           <h3>Homemade Cake</h3>
           <p>Freshly baked artisan seasonal sponge.</p>
-          <img src="images/cake.jpg" ${cakeAlt} style="width: 100%; max-height: 180px; object-fit: cover; border-radius: 6px; margin: 10px 0;">
+          ${cakeImageHtml}
           <p class="price">£4.00</p>
         </article>
       </div>
@@ -886,11 +1154,9 @@ ${headerOutsideHtml}
       <h2>Visit Us</h2>
       <p>14 Harbourside Walk, Bristol BS1 5TY</p>
       <p>Open Daily: 7:30am – 6:00pm</p>
+      ${contactAnchorBanner}
     </section>
-  ${mainClose}
-  <footer>
-    <p>&copy; 2026 Bristol Brew Café. All rights reserved.</p>
-  </footer>
+${mainAndFooterHtml}
 </body>
 </html>`;
 

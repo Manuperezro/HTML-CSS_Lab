@@ -480,55 +480,72 @@ nav a  { color: #f5e9d8; text-decoration: none; padding: 8px 16px; }
     }
 
     case 9: {
-      // Challenge 9: Flexbox menu cards
-      // Needs:
-      // display: flex; flex-wrap: wrap; gap: 20px; for grid
-      // flex: 1; min-width: 200px; for card
-      const gridIds = blocks.filter(b => b.id.startsWith('b9-grid')).map(b => b.content);
-      const cardIds = blocks.filter(b => b.id.startsWith('b9-card')).map(b => b.content);
+      // Challenge 9: CSS Box Model (Margin, Padding & Borders)
+      // .about-box: padding: 30px; and margin-bottom: 25px;
+      // .menu-card: padding: 20px;, margin-bottom: 16px;, border-left: 4px solid #c97a3e;
+      // .contact-box: padding: 24px;, margin-top: 20px;, border: 2px dashed #c97a3e;
+      const aboutBlocks = blocks.filter(b => b.category === '.about-box').map(b => b.content);
+      const cardBlocks = blocks.filter(b => b.category === '.menu-card').map(b => b.content);
+      const contactBlocks = blocks.filter(b => b.category === '.contact-box').map(b => b.content);
 
-      const hasFlex = gridIds.some(c => c.includes('display: flex;'));
-      const hasWrap = gridIds.some(c => c.includes('flex-wrap: wrap;'));
-      const hasGap = gridIds.some(c => c.includes('gap: 20px;'));
-      const hasFlexGrow = cardIds.some(c => c.includes('flex: 1;'));
-      const hasMinWidth = cardIds.some(c => c.includes('min-width: 200px;'));
+      const hasAboutPad = aboutBlocks.some(c => c.includes('padding: 30px;'));
+      const hasAboutMar = aboutBlocks.some(c => c.includes('margin-bottom: 25px;'));
 
-      if (hasFlex && hasWrap && hasGap && hasFlexGrow && hasMinWidth) {
+      const hasCardPad = cardBlocks.some(c => c.includes('padding: 20px;'));
+      const hasCardMar = cardBlocks.some(c => c.includes('margin-bottom: 16px;'));
+      const hasCardBor = cardBlocks.some(c => c.includes('border-left: 4px solid #c97a3e;'));
+
+      const hasContactPad = contactBlocks.some(c => c.includes('padding: 24px;'));
+      const hasContactMar = contactBlocks.some(c => c.includes('margin-top: 20px;'));
+      const hasContactBor = contactBlocks.some(c => c.includes('border: 2px dashed #c97a3e;'));
+
+      const isAllValid = hasAboutPad && hasAboutMar &&
+                         hasCardPad && hasCardMar && hasCardBor &&
+                         hasContactPad && hasContactMar && hasContactBor;
+
+      if (isAllValid) {
         return {
           isValid: true,
           attemptNumber: attemptCount,
           messageType: 'success',
-          title: 'Flexbox Layout Repaired!',
-          message: 'Sensational! Look at that preview: the menu cards snapped from an ugly vertical stack into an elegant, responsive horizontal row. When resized, they wrap smoothly!',
+          title: 'CSS Box Model Mastered!',
+          message: 'Sensational work! Look at the live preview: every section and menu card now has comfortable inner padding, clean outer margins separating the boxes, and crisp accent borders!',
           positiveHighlights: [
-            'display: flex creates a flex container',
-            'flex-wrap: wrap allows items to wrap on mobile screens',
-            'gap: 20px creates clean spacing between cards without margins',
-            'flex: 1 and min-width: 200px give cards equal flexible widths'
+            'padding creates internal cushion between text and box borders',
+            'margin-bottom and margin-top create external breathing room between boxes',
+            'border-left and dashed border frame the cards and contact box cleanly',
+            'All 8 Box Model declarations are assigned to their matching selectors'
           ]
         };
       }
 
-      let conceptual = 'Why are the cards stacked? By default, <div> has display: block;. What modern CSS display property makes child elements sit side-by-side in a flexible row?';
-      let specific = 'Apply display: flex; flex-wrap: wrap; and gap: 20px; to the container (.menu-grid). Then apply flex: 1; and min-width: 200px; to each card (.menu-card).';
-      let visual = `.menu-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+      const trayCount = blocks.filter(b => !b.category || b.category === 'tray').length;
+      let conceptual = 'Think about the CSS Box Model layers: padding creates space INSIDE the box border, border draws the frame, and margin creates space OUTSIDE between separate boxes.';
+      let specific = 'Assign all 8 declarations: .about-box needs 30px padding & 25px margin-bottom; .menu-card needs 20px padding, 16px margin-bottom & 4px solid border-left; .contact-box needs 24px padding, 20px margin-top & 2px dashed border.';
+      let visual = `.about-box {
+  padding: 30px;
+  margin-bottom: 25px;
 }
 
 .menu-card {
-  flex: 1;
-  min-width: 200px;
+  padding: 20px;
+  margin-bottom: 16px;
+  border-left: 4px solid #c97a3e;
+}
+
+.contact-box {
+  padding: 24px;
+  margin-top: 20px;
+  border: 2px dashed #c97a3e;
 }`;
 
-      if (!hasFlex) {
-        specific = 'You need display: flex; on the parent .menu-grid container to activate Flexbox!';
+      if (trayCount > 0) {
+        specific = `You still have ${trayCount} declaration(s) sitting in the Box Model Tray! Place all 8 declarations into .about-box, .menu-card, and .contact-box.`;
       }
 
-      if (attemptCount === 1) return { isValid: false, attemptNumber: 1, messageType: 'conceptual', title: 'Why Stacked?', message: conceptual };
-      if (attemptCount === 2) return { isValid: false, attemptNumber: 2, messageType: 'specific', title: 'Flexbox Properties Clue', message: specific };
-      return { isValid: false, attemptNumber: attemptCount, messageType: 'visual', title: 'Target Flexbox Code', message: 'Set up your Flexbox rules like this:', visualStructureHint: visual };
+      if (attemptCount === 1) return { isValid: false, attemptNumber: 1, messageType: 'conceptual', title: 'Margin vs Padding Concept', message: conceptual };
+      if (attemptCount === 2) return { isValid: false, attemptNumber: 2, messageType: 'specific', title: 'Box Model Assignment Clue', message: specific };
+      return { isValid: false, attemptNumber: attemptCount, messageType: 'visual', title: 'Target Box Model CSS', message: 'Organise your CSS Box Model rules like this:', visualStructureHint: visual };
     }
 
     case 10: {
@@ -558,12 +575,12 @@ nav a  { color: #f5e9d8; text-decoration: none; padding: 8px 16px; }
           totalItems: 10,
           fixedErrorsCount: 10,
           title: 'CONGRATULATIONS! YOU SAVED BRISTOL BREW CAFÉ!',
-          message: 'All 10 critical bugs have been diagnosed and resolved! You have successfully built and repaired a full commercial café homepage using professional HTML5 and CSS standards.',
+          message: 'All 10 critical bugs in index.html and style.css have been diagnosed and repaired in the code! You have built and debugged a complete café homepage using professional HTML5 and CSS standards.',
           positiveHighlights: [
-            'Fixed HTML tag pairing, closing tags, and semantic hierarchy',
-            'Corrected stylesheet linking and relative image paths',
-            'Implemented accessible alt descriptions and working navigation links',
-            'Fixed CSS syntax errors, class selectors, and responsive Flexbox grid'
+            'Fixed HTML tag pairing (</main>), <header> in <body>, and <nav> in <header>',
+            'Corrected stylesheet link (style.css) and relative image path (images/coffee.jpg)',
+            'Implemented accessible alt descriptions and working #contact navigation link',
+            'Repaired CSS class selector (.hero), header semicolon (;), and .menu-card margin & padding'
           ]
         };
       }
@@ -576,7 +593,7 @@ nav a  { color: #f5e9d8; text-decoration: none; padding: 8px 16px; }
         totalItems: 10,
         fixedErrorsCount: fixedCount,
         title: `Diagnostic Progress: ${fixedCount} of 10 Bugs Repaired`,
-        message: `You have resolved ${fixedCount} of the 10 errors. Check the Diagnostic Bug Inspector checklist to locate the remaining ${10 - fixedCount} problems in index.html and style.css!`
+        message: `You have repaired ${fixedCount} of the 10 errors. Switch between the index.html and style.css tabs in the Code Editor to spot and fix the remaining ${10 - fixedCount} red error lines!`
       };
     }
 

@@ -294,51 +294,54 @@ nav a {
   },
   {
     challengeId: 9,
-    title: 'Challenge 9: The Menu Cards Are Stacked! (Fix Layout with Flexbox)',
+    title: 'Challenge 9: Everything Is Squashed Together! (CSS Box Model: Margin & Padding)',
     learningObjectives: [
-      'Apply CSS Flexible Box Layout (Flexbox) to arrange items horizontally',
-      'Use flex-wrap to ensure layout wraps gracefully on smaller screens',
-      'Control spacing between cards with the modern gap property'
+      'Master the four layers of the CSS Box Model: Content, Padding, Border, and Margin',
+      'Use padding to create internal cushion inside containers and cards',
+      'Use margin-bottom and margin-top to create external separation between adjacent elements'
     ],
-    newConcepts: ['display: flex', 'Flex container vs flex items', 'flex-wrap: wrap', 'gap property', 'flex: 1', 'min-width: 200px'],
-    expectedSolutionSummary: 'Change .menu-grid to display: flex; flex-wrap: wrap; gap: 20px; and apply flex: 1; min-width: 200px; to .menu-card.',
+    newConcepts: ['CSS Box Model', 'padding (inner spacing)', 'margin-bottom & margin-top (outer spacing)', 'border & border-left'],
+    expectedSolutionSummary: 'Assign padding: 30px; and margin-bottom: 25px; to .about-box; assign padding: 20px;, margin-bottom: 16px;, and border-left: 4px solid #c97a3e; to .menu-card; assign padding: 24px;, margin-top: 20px;, and border: 2px dashed #c97a3e; to .contact-box.',
     expectedCode: {
-      css: `.menu-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+      css: `.about-box {
+  padding: 30px;
+  margin-bottom: 25px;
 }
 
 .menu-card {
-  flex: 1;
-  min-width: 200px;
-  background-color: #ffffff;
-  border-radius: 8px;
   padding: 20px;
+  margin-bottom: 16px;
+  border-left: 4px solid #c97a3e;
+}
+
+.contact-box {
+  padding: 24px;
+  margin-top: 20px;
+  border: 2px dashed #c97a3e;
 }`
     },
     commonMisconceptions: [
-      'Setting display: flex on individual cards rather than the parent container (.menu-grid).',
-      'Forgetting flex-wrap: wrap, resulting in squished items on narrow viewports.'
+      'Confusing padding (space inside the border that shows the element\'s background colour) with margin (transparent space outside the border).',
+      'Using padding when trying to push two separate cards away from each other.'
     ],
     suggestedQuestions: [
-      'What is the difference between display: block and display: flex?',
-      'Why is min-width: 200px vital when combined with flex: 1?'
+      'If an element has a white background and a brown border, does increasing padding or margin add more white space inside the border?',
+      'Why do we use border-left on .menu-card instead of a full 4-sided border?'
     ],
     extensionTasks: [
-      'Explain how justify-content: space-between distributes unused horizontal space in a flex container.'
+      'Open Chrome DevTools (F12) and inspect the visual Box Model diagram in the Computed styles panel.'
     ]
   },
   {
     challengeId: 10,
     title: 'Challenge 10: SAVE BRISTOL BREW CAFÉ! (Final 10-Bug Mission)',
     learningObjectives: [
-      'Synthesise all HTML and CSS skills in a comprehensive code repair scenario',
-      'Diagnose and correct syntax errors, path errors, and semantic misplacements',
-      'Achieve a fully validated, production-ready small business website'
+      'Synthesise all HTML and CSS skills in a comprehensive source-code repair scenario',
+      'Read HTML and CSS source code to spot syntax errors, path errors, and box-model bugs',
+      'Observe live visual changes in the webpage preview as each line of code is fixed'
     ],
-    newConcepts: ['Code debugging', 'Inspector diagnostics', 'Error triage', 'Cross-file coordination between HTML and CSS'],
-    expectedSolutionSummary: 'Diagnose and fix all 10 bugs: 1. Add missing </main>, 2. Correct href to style.css, 3. Place header inside body, 4. Nest nav inside header, 5. Fix coffee image path to images/coffee.jpg, 6. Add alt="Homemade cake", 7. Fix selector to .hero, 8. Add semicolon to color declaration, 9. Set display: flex on .menu-grid, 10. Correct link href to #contact.',
+    newConcepts: ['Source code debugging', 'Before & after code inspection', 'Error triage', 'Cross-file coordination between index.html and style.css'],
+    expectedSolutionSummary: 'Diagnose and fix all 10 bugs across index.html and style.css: 1. Add missing </main>, 2. Correct href to style.css, 3. Place <header> inside <body>, 4. Nest <nav> inside <header>, 5. Fix coffee image path to images/coffee.jpg, 6. Add alt="Homemade artisan cake", 7. Fix class selector to .hero, 8. Add missing semicolon after header padding, 9. Fix 0px padding and margin on .menu-card to 24px padding & 16px margin-bottom, 10. Correct link href to #contact.',
     expectedCode: {
       html: `<!DOCTYPE html>
 <html lang="en">

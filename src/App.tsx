@@ -149,6 +149,18 @@ export const App: React.FC = () => {
     });
   };
 
+  // Move declarations for Challenge 9 (Box Model: Margin, Padding & Border)
+  const handleMoveChallenge9Block = (blockId: string, targetCategory: string) => {
+    soundManager.playMove();
+    setBlocksMap(prev => {
+      const updated = (prev[9] || []).map(b => {
+        if (b.id === blockId) return { ...b, category: targetCategory };
+        return b;
+      });
+      return { ...prev, 9: updated };
+    });
+  };
+
   // Toggle bug for Challenge 10
   const handleToggleBug = (bugKey: keyof BugFixState) => {
     soundManager.playMove();
@@ -194,7 +206,23 @@ export const App: React.FC = () => {
     if (!ch) return;
 
     soundManager.playMove();
-    // Shuffle blocks
+    if (currentChallengeId === 10) {
+      setBugState({ ...INITIAL_BUG_STATE });
+      setCompletedChallenges(prev => prev.filter(id => id !== 10));
+      setFeedback(null);
+      return;
+    }
+
+    if (currentChallengeId === 9) {
+      setBlocksMap(prev => ({
+        ...prev,
+        9: ch.initialBlocks.map(b => ({ ...b, category: 'tray' }))
+      }));
+      setFeedback(null);
+      return;
+    }
+
+    // Shuffle blocks for ordering challenges
     const shuffled = [...ch.initialBlocks].sort(() => Math.random() - 0.5);
     setBlocksMap(prev => ({
       ...prev,
@@ -308,7 +336,20 @@ export const App: React.FC = () => {
             8: (prev[8] || []).map(b => ({ ...b, category: mapping[b.id] || b.category }))
           }));
         } else if (id === 9) {
-          // challenge 9
+          const mapping9: Record<string, string> = {
+            'b9-about-pad': '.about-box',
+            'b9-about-mar': '.about-box',
+            'b9-card-pad': '.menu-card',
+            'b9-card-mar': '.menu-card',
+            'b9-card-bor': '.menu-card',
+            'b9-contact-pad': '.contact-box',
+            'b9-contact-mar': '.contact-box',
+            'b9-contact-bor': '.contact-box'
+          };
+          setBlocksMap(prev => ({
+            ...prev,
+            9: (prev[9] || []).map(b => ({ ...b, category: mapping9[b.id] || b.category }))
+          }));
         } else if (id === 10) {
           setBugState({
             bug1_mainClose: true,
@@ -379,6 +420,7 @@ export const App: React.FC = () => {
           bugState={bugState}
           onToggleBug={handleToggleBug}
           onMoveChallenge8Block={handleMoveChallenge8Block}
+          onMoveChallenge9Block={handleMoveChallenge9Block}
         />
 
         {/* Right: Live Sandboxed Website Preview */}

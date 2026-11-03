@@ -162,5 +162,32 @@ export const CODE_EXPLANATIONS: Record<string, CodeExplanation> = {
     whyUsed: 'Much cleaner and more robust than applying tricky margins to children elements.',
     syntaxExample: '.menu-grid {\n  display: flex;\n  gap: 20px;\n}',
     commonMistake: 'Expecting gap to work when display is set to block.'
+  },
+  padding: {
+    title: 'padding (Inner Box Spacing)',
+    elementOrProperty: 'padding',
+    type: 'CSS Property',
+    whatItDoes: 'Creates internal breathing room INSIDE an element, between its text/content and its border.',
+    whyUsed: 'Stops text from touching the edges of cards, buttons, and sections so content looks clean and readable.',
+    syntaxExample: '.menu-card {\n  padding: 20px;\n}',
+    commonMistake: 'Confusing padding (space inside the border) with margin (space outside the border).'
+  },
+  margin: {
+    title: 'margin (Outer Box Spacing)',
+    elementOrProperty: 'margin / margin-bottom / margin-top',
+    type: 'CSS Property',
+    whatItDoes: 'Creates transparent external space OUTSIDE an element\'s border, pushing neighbouring elements away.',
+    whyUsed: 'Prevents cards and sections from sticking together like one giant block.',
+    syntaxExample: '.menu-card {\n  margin-bottom: 16px;\n}',
+    commonMistake: 'Using padding when you actually want space between two separate boxes.'
+  },
+  border: {
+    title: 'border / border-left',
+    elementOrProperty: 'border',
+    type: 'CSS Property',
+    whatItDoes: 'Draws a visible boundary line around an element, sitting directly between the inner padding and outer margin.',
+    whyUsed: 'Visually frames cards and callout boxes or adds a stylish accent stripe on one side.',
+    syntaxExample: '.menu-card {\n  border-left: 4px solid #c97a3e;\n}\n.contact-box {\n  border: 2px dashed #c97a3e;\n}',
+    commonMistake: 'Forgetting one of the three required values: border-width (e.g. 2px), border-style (solid/dashed), and border-color.'
   }
 };

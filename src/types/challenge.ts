@@ -2,7 +2,7 @@ export type ChallengeId = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
 export type DifficultyLevel = 'Very Easy' | 'Easy' | 'Easy to Medium' | 'Medium' | 'Medium to Hard' | 'Hard' | 'Advanced Beginner';
 
-export type ChallengeCategory = 'file-explorer' | 'html-order' | 'html-nesting' | 'css-connect' | 'css-assembly' | 'css-categorize' | 'flexbox' | 'multi-bug';
+export type ChallengeCategory = 'file-explorer' | 'html-order' | 'html-nesting' | 'css-connect' | 'css-assembly' | 'css-categorize' | 'box-model' | 'flexbox' | 'multi-bug';
 
 export interface CodeBlock {
   id: string;
