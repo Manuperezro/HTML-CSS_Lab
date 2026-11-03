@@ -161,7 +161,7 @@ export const CompletionModal: React.FC<CompletionModalProps> = ({ isOpen, onClos
                 <ul style={{ paddingLeft: '22px', fontSize: '0.83rem', color: 'var(--cafe-primary)', lineHeight: 1.5, marginTop: '8px' }}>
                   <li><strong>Semantic Hierarchy:</strong> By using tags like <code>&lt;header&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;section&gt;</code>, and <code>&lt;article&gt;</code>, browsers and assistive technologies understand the exact purpose of every zone of the page.</li>
                   <li><strong>Separation of Concerns:</strong> Keeping HTML files purely structural and linking an external <code>style.css</code> ensures pages load faster, styles can be reused across hundreds of pages, and code remains clean.</li>
-                  <li><strong>Responsive Modern Layouts:</strong> With CSS Flexbox (<code>display: flex</code>, <code>gap</code>, <code>flex-wrap</code>), items gracefully adapt across mobile phones, tablets, and desktop displays without breaking.</li>
+                  <li><strong>CSS Box Model (Margin, Padding &amp; Borders):</strong> By mastering inner <code>padding</code>, visible <code>border</code> frames, and outer <code>margin</code> spacing, every section and menu card has clean breathing room.</li>
                 </ul>
               </div>
 
@@ -188,7 +188,7 @@ export const CompletionModal: React.FC<CompletionModalProps> = ({ isOpen, onClos
                     <strong>5. CSS Rule Anatomy:</strong> Selectors, properties, units, hexadecimal color codes, and punctuation.
                   </div>
                   <div style={{ background: 'var(--bg-surface-subtle)', padding: '12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-light)' }}>
-                    <strong>6. Responsive Flexbox:</strong> Dynamic rows, wrap behavior, card expansion, and modern gutters.
+                    <strong>6. CSS Box Model:</strong> Inner padding cushions, outer margin spacing, and accent borders.
                   </div>
                 </div>
               </div>
@@ -231,7 +231,7 @@ export const CompletionModal: React.FC<CompletionModalProps> = ({ isOpen, onClos
             <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                 <span style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-muted)' }}>
-                  Production-ready style.css (Responsive Flexbox & Warm Theme)
+                  Production-ready style.css (CSS Box Model &amp; Warm Theme)
                 </span>
                 <button
                   onClick={() => handleCopy(FINAL_VALID_CSS, 'css')}

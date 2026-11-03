@@ -20,7 +20,7 @@ Congratulations on completing the Bristol Café Code Lab!
 
 This project directory represents a complete, professional,
 standards-compliant small business website built with semantic
-HTML5 and modern responsive CSS (Flexbox).
+HTML5 and modern CSS Box Model styling (Margin, Padding & Borders).
 
 Project Structure:
 bristol-cafe/
@@ -35,7 +35,7 @@ bristol-cafe/
 Key Features:
 - Semantic HTML5 Landmarks: <header>, <nav>, <main>, <section>, <article>, <footer>
 - Accessible markup with descriptive alt attributes and aria considerations
-- Responsive CSS Flexbox card grid layout (.menu-grid, .menu-card)
+- Clean CSS Box Model spacing (margin, padding, and borders on .menu-card and sections)
 - Clean typography and cohesive warm café colour palette
 - No external runtime dependencies; runs 100% offline in any browser!
 

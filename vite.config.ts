@@ -12,11 +12,11 @@ export default defineConfig({
         handler(html) {
           return html
             .replace(
-              /<link rel="stylesheet" crossorigin href="\.\/assets\/index\.css">/g,
+              /<link rel="stylesheet" crossorigin href="\.\/assets\/index\.css(\?[^"]*)?">/g,
               ''
             )
             .replace(
-              /<script type="module" crossorigin src="\.\/assets\/index\.js"><\/script>/g,
+              /<script type="module" crossorigin src="\.\/assets\/index\.js(\?[^"]*)?"><\/script>/g,
               '<script type="module" src="/src/main.tsx"></script>'
             )
         },

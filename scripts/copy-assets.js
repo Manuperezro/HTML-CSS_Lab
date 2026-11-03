@@ -27,5 +27,17 @@ if (fs.existsSync(dist)) {
     fs.copyFileSync(iconsPath, path.join(root, 'icons.svg'));
   }
 
+  // Add cache-busting query string to index.html and dist/index.html so browsers never serve stale cached JS/CSS
+  const versionTag = Date.now().toString();
+  for (const htmlPath of [path.join(dist, 'index.html'), path.join(root, 'index.html')]) {
+    if (fs.existsSync(htmlPath)) {
+      let html = fs.readFileSync(htmlPath, 'utf-8');
+      html = html
+        .replace(/href="\.\/assets\/index\.css(\?[^"]*)?"/g, `href="./assets/index.css?v=${versionTag}"`)
+        .replace(/src="\.\/assets\/index\.js(\?[^"]*)?"/g, `src="./assets/index.js?v=${versionTag}"`);
+      fs.writeFileSync(htmlPath, html, 'utf-8');
+    }
+  }
+
   console.log('Static production assets successfully copied to root for GitHub Pages.');
 }
